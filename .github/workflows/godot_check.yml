@@ -1,0 +1,26 @@
+name: Godot Headless Check
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v3
+
+      # Step 1: Download Godot
+      - name: Download Godot
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/4.2/
+          Godot_v4.2-stable_linux.x86_64.zip
+          unzip Godot_v4.2-stable_linux.x86_64.zip
+
+      # Step 2: Make it executable
+      - name: Make Godot executable
+        run: chmod +x Godot_v4.2-stable_linux.x86_64
+
+      # Step 3: Run in headless mode
+      - name: Confirm Godot starts
+        run: ./Godot_v4.2-stable_linux.x86_64 --headless --version
