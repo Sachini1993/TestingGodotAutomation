@@ -7,20 +7,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Get the code
       - name: Get the code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # Step 1: Download Godot
+      # Step 2: Download Godot executable (using curl — pre-installed on ubuntu-latest)
       - name: Download Godot
         run: |
-          wget https://github.com/godotengine/godot/releases/download/4.2-stable/Godot_v4.2-stable_export_templates.tpz
-          Godot_v4.2-stable_linux.x86_64.zip
-          unzip Godot_v4.2-stable_linux.x86_64.zip
+          curl -L -o godot.zip \
+            https://github.com/godotengine/godot/releases/download/4.2-stable/Godot_v4.2-stable_linux.x86_64.zip
+          unzip godot.zip
+          ls -la
 
-      # Step 2: Make it executable
+      # Step 3: Make it executable
       - name: Make Godot executable
         run: chmod +x Godot_v4.2-stable_linux.x86_64
 
-      # Step 3: Run in headless mode
+      # Step 4: Confirm Godot starts
       - name: Confirm Godot starts
         run: ./Godot_v4.2-stable_linux.x86_64 --headless --version
+
+      # Step 5: (Optional) Export your game
+      # Uncomment below if you want to export
+      #
+      # - name: Download Export Templates
+      #   run: |
+      #     curl -L -o templates.tpz \
+      #       https://github.com/godotengine/godot/releases/download/4.2-stable/Godot_v4.2-stable_export_templates.tpz
+      #     mkdir -p ~/.local/share/godot/export_templates/4.2.stable
+      #     unzip templates.tpz
+      #     mv templates/* ~/.local/share/godot/export_templates/4.2.stable/
+      #
+      # - name: Import Assets
+      #   run: ./Godot_v4.2-stable_linux.x86_64 --headless --editor --quit || true
+      #
+      # - name: Export Windows
+      #   run: |
+      #     mkdir -p build/windows
+      #     ./Godot_v4.2-stable_linux.x86_64 --headless --verbose \
+      #       --export-release "Windows Desktop" build/windows/game.exe
+      #
+      # - name: Upload Build
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: windows-build
+      #     path: build/windows
