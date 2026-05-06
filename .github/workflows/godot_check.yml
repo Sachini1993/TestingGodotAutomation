@@ -13,7 +13,7 @@ jobs:
       # Step 1: Download Godot
       - name: Download Godot
         run: |
-          wget https://downloads.tuxfamily.org/godotengine/4.2/
+          wget https://github.com/godotengine/godot/releases/download/4.2-stable/Godot_v4.2-stable_export_templates.tpz
           Godot_v4.2-stable_linux.x86_64.zip
           unzip Godot_v4.2-stable_linux.x86_64.zip
 
